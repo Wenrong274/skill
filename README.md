@@ -8,7 +8,24 @@
 
 ## 安裝
 
-先 clone：
+用 [skills](https://github.com/vercel-labs/skills) CLI（需要 Node.js）：
+
+```bash
+# 裝在目前的專案內：Claude Code、Codex、Antigravity 都讀得到
+npx skills add Wenrong274/skill -s brief-and-verify -a claude-code codex antigravity-cli
+
+# 裝成全域（所有專案都能用）：Claude Code、Codex
+npx skills add Wenrong274/skill -g -s brief-and-verify -a claude-code codex
+
+# 之後更新
+npx skills update
+```
+
+專案內安裝會放在 `.agents/skills/brief-and-verify/`（Codex、Antigravity 共用），並從 `.claude/skills/` 連結過去。全域安裝沒有實測過；Antigravity 的全域安裝目前讀不到 skill 內文，見注意事項，所以 Antigravity 請用專案內安裝。
+
+### 手動安裝
+
+不想用 CLI 時，先 clone：
 
 ```bash
 git clone https://github.com/Wenrong274/skill.git
@@ -46,7 +63,7 @@ Copy-Item -Recurse skill\skills\brief-and-verify "$HOME\.agents\skills\"
   ```
 
   實測一般使用者就能加、也能拿掉，不需要系統管理員權限（`icacls /restore` 則需要，一般使用者會失敗）。
-- **Antigravity 的全域安裝目前用不了**：在 `~/.gemini/config/skills.json` 宣告（`path` 要寫絕對路徑）可以讓 agy 載入名稱和描述，但內文要 agy 自己讀檔；skill 在工作目錄外時，`agy -p` 非互動模式的讀檔權限會被自動拒絕，整個沒有輸出。互動模式會不會詢問權限沒測過。所以目前建議放在專案內的 `.agents/skills/`。
+- **Antigravity 的全域安裝目前用不了**：在 `~/.gemini/config/skills.json` 宣告（`path` 要寫絕對路徑）可以讓 agy 載入名稱和描述，但內文要 agy 自己讀檔；skill 在工作目錄外時，`agy -p` 非互動模式的讀檔權限會被自動拒絕，整個沒有輸出。互動模式會不會詢問權限沒測過。所以目前建議放在專案內的 `.agents/skills/`（上面的專案內安裝就是這樣放，實測 agy、Codex 都讀得到內文）。
 - brief-and-verify 會呼叫其他家的 CLI 做交叉驗證，各 CLI 的呼叫方式和實測行為見 [skills/brief-and-verify/references/external-agents.md](skills/brief-and-verify/references/external-agents.md)。
 
 ## 反饋紀錄
